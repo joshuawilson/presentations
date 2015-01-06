@@ -1,0 +1,39 @@
+= MVC
+Joshua Wilson <josh@redhat.com>
+v0.0.1, 2015-01-02
+:page-layout: base
+:description: Introduction to Java EE 8 MVC
+:keywords: MVC, JavaEE, Java
+:compat-mode!:
+:imagesdir: ./images
+:includedir: ./_includes
+:sectlinks:
+:experimental:
+:table-caption!:
+:example-caption!:
+:figure-caption!:
+:linkattrs:
+//:icons: font
+:revealjs_theme: night
+
+// URLs
+
+
+== Introduction to MVC
+
+* point 1
+* point 2
+
+
+== slide a
+
+not so interesting
+
+[NOTE.speaker]
+--
+notes for me
+--
+
+== slide b
+
+=== slide b a
