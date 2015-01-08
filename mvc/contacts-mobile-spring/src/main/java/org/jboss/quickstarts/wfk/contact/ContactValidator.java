@@ -26,6 +26,8 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import javax.validation.Validator;
 
+import org.springframework.stereotype.Component;
+
 /**
  * JAX-RS Example
  * <p/>
@@ -34,6 +36,7 @@ import javax.validation.Validator;
  * @author Joshua Wilson
  *
  */
+@Component
 public class ContactValidator {
     @Inject
     private Validator validator;

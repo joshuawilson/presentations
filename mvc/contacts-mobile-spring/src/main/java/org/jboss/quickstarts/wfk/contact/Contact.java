@@ -38,6 +38,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
+import org.springframework.stereotype.Component;
 
 /**
  * This is a Domain Object.   
@@ -49,6 +50,7 @@ import org.hibernate.validator.constraints.NotEmpty;
  * The @NamedQueries included here are for searching against the table that reflects this object.  This is the most efficient
  * form of query in JPA though is it more error prone due to the syntax being in a String.  This makes it harder to debug.
  */
+@Component
 @Entity
 @NamedQueries({
     @NamedQuery(name = Contact.FIND_ALL, query = "SELECT c FROM Contact c ORDER BY c.lastName ASC, c.firstName ASC"),

@@ -16,10 +16,11 @@
  */
 package org.jboss.quickstarts.wfk.contact;
 
-import javax.enterprise.context.Dependent;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
+
+import org.springframework.stereotype.Component;
 
 import java.util.List;
 import java.util.logging.Logger;
@@ -36,12 +37,11 @@ import java.util.logging.Logger;
  * @author Joshua Wilson
  *
  */
-// The @Dependent is the default scope is listed here so that you know what scope is being used.
-@Dependent
+@Component
 public class ContactService {
 
-    @Inject
-    private Logger log;
+//    @Inject
+//    private Logger log;
 
     @Inject
     private ContactValidator validator;
@@ -113,7 +113,7 @@ public class ContactService {
      * @throws ConstraintViolationException, ValidationException, Exception
      */
     Contact create(Contact contact) throws ConstraintViolationException, ValidationException, Exception {
-        log.info("ContactService.create() - Creating " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactService.create() - Creating " + contact.getFirstName() + " " + contact.getLastName());
         
         // Check to make sure the data fits with the parameters in the Contact model and passes validation.
         validator.validateContact(contact);
@@ -135,7 +135,7 @@ public class ContactService {
      */
 //    Map<String, Object> update(Contact contact) throws Exception {
     Contact update(Contact contact) throws ConstraintViolationException, ValidationException, Exception {
-        log.info("ContactService.update() - Updating " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactService.update() - Updating " + contact.getFirstName() + " " + contact.getLastName());
         
         // Check to make sure the data fits with the parameters in the Contact model and passes validation.
         validator.validateContact(contact);
@@ -155,14 +155,14 @@ public class ContactService {
      */
 //    Map<String, Object> delete(Contact contact) throws Exception {
     Contact delete(Contact contact) throws Exception {
-        log.info("ContactService.delete() - Deleting " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactService.delete() - Deleting " + contact.getFirstName() + " " + contact.getLastName());
         
         Contact deletedContact = null;
         
         if (contact.getId() != null) {
             deletedContact = crud.delete(contact);
-        } else {
-            log.info("ContactService.delete() - No ID was found so can't Delete.");
+//        } else {
+//            log.info("ContactService.delete() - No ID was found so can't Delete.");
         }
         
         return deletedContact;

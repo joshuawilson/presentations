@@ -15,25 +15,362 @@ v0.0.1, 2015-01-02
 :linkattrs:
 //:icons: font
 :revealjs_theme: night
+:source-highlighter: coderay
 
 // URLs
 
-
-== Introduction to MVC
-
-* point 1
-* point 2
+//twitter: @javajoshw
 
 
-== slide a
+== What is MVC?
 
-not so interesting
+MVC is a pattern used to implement a user interface (UI).
+
+It consists of 3 major components
+
+* **M**odel
+* **V**iew
+* **C**ontroller
+
+== The **M**odel in MVC
+
+The model is the interim state you want to keep when you are building an
+application that shows a user interface
+
+Examples
+
+* Who is logged in
+* What are they trying to buy
+* What page are they on in a multi page flow
+
+== The **V**iew in MVC
+
+The view is what your user interacts with
+
+In a web application that would be the web page or web pages
+
+* your JSP page
+* your CSS styles
+* your JavaScript
+
+//In a thick client scenario it would be the entire UI
+
+//In an embedded scenario it could be the touch screen, hardware buttons etc.
+
+== The **C**ontroller in MVC
+
+The controller is the work horse of the pattern, as it:
+
+|===
+|Task | Example
+
+|Executes the business logic
+|Run a credit card transaction
+
+|Updates the model
+|Mark the transaction as successful in the model object
+
+|Ask the view to render itself
+|Shows the transaction was successful
+
+|===
+
+== Different styles of MVC
+
+Component-based MVC
+
+Action-based MVC
+
+== Component-based MVC (Pull)
+
+A specific style of MVC made popular by component frameworks
+
+Controller provided by the framework
+
+Examples
+
+* Java Server Faces (in the JavaEE platform)
+* Seam (discontinued)
+* Wicket
+* Tapestry
+* Lift
+* uMircro
+* Apache Click (retired)
+
+=== Component MVC
+
+image::component-mvc.png[]
+
+== Action-based MVC (Push)
+
+Controller(s) defined by the application
+
+Examples
+
+* Spring MVC
+* Struts 2
+* Django
+* Ruby on Rails
+* Symfony
+* Yii
+* Stripes
+* Play
+* CodeIgniter
+* VRaptor
+* Spark-java
 
 [NOTE.speaker]
 --
-notes for me
+Currently no JavaEE implementation
+
+Good news we are creating one!
 --
 
-== slide b
+=== Action MVC
 
-=== slide b a
+image::action-mvc.png[]
+
+=== Spring MVC life cycle
+
+image::springmvclifecycle.jpg[]
+
+=== Spring MVC
+
+image::spring-mvc.png[]
+
+== Compare and Contrast
+
+|===
+|Action-based MVC |Component-based MVC
+
+|Manual request parameter processing
+|Automatic request parameter procession
+
+|No view kept around
+|View kept around
+
+|Limited support for re-usable behavior
+|Component libraries that implement re-usable behavior
+
+|Developer responsible for all HTML / JavaScript
+|Components render HTML / JavaScript
+
+|No automatic input conversion
+|Automatic input conversion
+
+|No automatic input validation
+|Automatic input validation
+
+|Request centric
+|Page centric
+
+|===
+
+== The JavaEE 8 MVC 1.0 JSR
+
+Why now?
+
+* JavaEE 8 survey
+* Talking to customers
+* UI landscape is not one size fits all
+* JavaEE is about standards
+
+//What are we looking at?
+
+//* Tight CDI integration
+//* Build on top of exiting APIs
+
+=== Expert Group
+
+|===
+|Name |Org
+
+|Santiago Pericas-Geertsen |Oracle
+|Manfred Riem |Oracle
+|Mathieu Ancelin |
+|Rodrigo Turini |Caelum
+|Frank Caputo |
+|Ivar Grimstad |
+|Paul Nicolucci |IBM
+|Stefan Tilkov |innoQ Deutschland GmbH
+|Christian Kaltepoth |
+|Neil Griffin |Liferay, Inc
+|Joshua Wilson |RedHat
+|Guilherme de Azevedo Silveira |
+|Woong-ki Lee |TmaxSoft, Inc.
+
+|===
+
+=== Where
+
+Where are we at?
+
+* The JSR has been approved
+* We have the EG up and running
+
+=== How
+
+How can I help?
+
+* Join the users@mvc-spec.java.net mailinglist and comment
+* Participate in the Adopt-a-JSR program (JUGs)
+* Test out snapshots (once available) from the RI website
+* (http://ozark.java.net) and file issues if something is not working
+* Tweet, blog, socialize to raise awareness about MVC 1.0
+
+=== An example about the EG process
+
+We just finished discussing about the following question:
+“Do we build on top of JAX-RS or not?”
+
+Since the users@mvc-spec.java.net mailing list gets every mail the EG sends
+you can follow this discussion as well
+
+What do you think?
+
+* Tell us on the mailing list
+* Tweet about it
+* Talk to me after the session
+
+//== Another couple of things being discussed
+
+//Programmatic API so you can change the runtime behavior
+
+//Type conversion of form inputs
+
+//An SPI to plug in a different view technology
+
+//* Velocity
+//* Freemarker
+//* Thymeleaf
+//* … Your view technology …
+
+== MVC vs JSF examples
+
+=== MVC (Spring MVC)
+
+[source, language="java"]
+----
+@Named
+@RequestMapping("/appointments")
+public class AppointmentsController {
+
+  @Inject
+  private AppointmentBook appointmentBook;
+
+  @RequestMapping(value="/new", method = RequestMethod.GET)
+  public String getNewForm(Model model) {
+    model.addAttribute("appointment", new Appointment();
+    return "appointment-edit";
+  }
+
+  @RequestMapping(value="/new", method = RequestMethod.POST)
+  public String add(@Valid Appointment appointment, BindingResult result, RedirectAttributes redirectAttributes) {
+    if (result.hasErrors()) {
+      return "appointments/new";
+    }
+    appointmentBook.addAppointment(appointment);
+    redirectAttributes.addFlashAttribute("message", "Successfully added"+appointment.getTitle();
+
+    return "redirect:/appointments";
+  }
+
+}
+----
+
+=== JSF
+
+[source, language="java"]
+----
+@Named
+@ViewScoped
+public class NewAppointmentsBacking {
+
+  @Inject
+  private AppointmentBook appointmentBook;
+
+  private Appointment appointment = new Appointment();
+
+  public Appointment getAppointment() {
+    return appointment;
+  }
+
+  public String add() {
+    appointmentBook.addAppointment(appointment);
+    addFlashMessage("Successfully added " + appointment.getTitle());
+
+    return "/appointments?faces-redirect=true";
+  }
+}
+----
+
+== MVC vs JSF (dynamic)
+
+=== MVC (Spring MVC)
+
+[source, language="html"]
+----
+<c:forEach value="${thumbnails}" var="thumbnail">
+    <div>
+        <div class="thumbnail">
+            <img src="/thumbnails/${thumbnail.id}" />
+    </div>
+    <c:out value="${thumbnail.caption}" />
+    </div>
+</c:forEach>
+----
+
+[source, language="java"]
+----
+@Controller
+public ThumbnailsController {
+
+    @Inject
+    private ThumbnailsDAO thumbnails;
+
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView images() {
+        ModelAndView mv = new ModelAndView("images");
+        mv.addObject("thumbnails", thumbnailsDAO.getThumbnails());
+        return mv;
+    }
+
+    @RequestMapping(value = "/thumbnails/{id}", method = RequestMethod.GET, produces = "image/jpeg")
+    public @ResponseBody byte[] thumbnail(@PathParam long id)  {
+        return thumbnailsDAO.getThumbnail(id);
+    }
+}
+----
+
+=== JSF
+
+[source, language="html"]
+----
+<ui:repeat value="#{thumbnails}" var="thumbnail">
+    <div>
+        <div class="thumbnail">
+            <o:graphicImage value="#{thumbnailsBacking.thumbnail(thumbnail.id)}" />
+        </div>
+        #{thumbnail.caption}
+    </div>
+</ui:repeat>
+----
+
+[source, language="java"]
+----
+@Model
+public class ThumbnailsBacking {
+
+    @Inject
+    private ThumbnailsDAO thumbnailsDAO;
+
+    @Produces @RequestScoped @Named("thumbnails")
+    public List<Thumbnail> getThumbnails() {
+        return thumbnailsDAO.getThumbnails();
+    }
+
+    public byte[] thumbnail(Long id) {
+        return thumbnailsDAO.getThumbnail(id);
+    }
+}
+----

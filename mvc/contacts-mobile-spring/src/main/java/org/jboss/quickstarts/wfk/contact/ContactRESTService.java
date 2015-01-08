@@ -22,22 +22,17 @@ import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
 
-import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.validation.ConstraintViolation;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.DELETE;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.PUT;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import javax.ws.rs.WebApplicationException;
+
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * JAX-RS Example
@@ -47,23 +42,12 @@ import javax.ws.rs.WebApplicationException;
  * @author Joshua Wilson
  *
  */
-/*
- * The Path annotation defines this as a REST Web Service using JAX-RS.
- * 
- * By placing the Consumes and Produces annotations at the class level the methods all default to JSON.  However, they 
- * can be overriden by adding the Consumes or Produces annotations to the individual method.
- * 
- * It is Stateless to "inform the container that this RESTful web service should also be treated as an EJB and allow 
- * transaction demarcation when accessing the database." - Antonio Goncalves
- * 
- */
-@Path("/contacts")
-@Consumes(MediaType.APPLICATION_JSON)
-@Produces(MediaType.APPLICATION_JSON)
-@Stateless
+
+@RestController
+@RequestMapping("/contacts")
 public class ContactRESTService {
-    @Inject
-    private Logger log;
+//    @Inject
+//    private Logger log;
     
     @Inject
     private ContactService service;
@@ -73,7 +57,7 @@ public class ContactRESTService {
      * 
      * @return List of Contacts
      */
-    @GET
+    @RequestMapping(method=RequestMethod.GET)
     public Response retrieveAllContacts() {
         List<Contact> contacts = service.findAllOrderedByName();
         if (contacts.isEmpty()) {
@@ -87,9 +71,8 @@ public class ContactRESTService {
      * 
      * @return List of Contacts
      */
-    @GET
-    @Path("/{email}")
-    public Response retrieveContactsByEmail(@PathParam("email") String email) {
+    @RequestMapping(value="email", method=RequestMethod.GET)
+    public Response retrieveContactsByEmail(@PathVariable String email) {
         Contact contact = service.findByEmail(email);
         if (contact == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
@@ -103,15 +86,14 @@ public class ContactRESTService {
      * @param ID of the Contact
      * @return Response
      */
-    @GET
-    @Path("/{id:[0-9][0-9]*}")
-    public Response retrieveContactById(@PathParam("id") long id) {
+    @RequestMapping(value="id:[0-9][0-9]*", method=RequestMethod.GET)
+    public Response retrieveContactById(@PathVariable long id) {
         Contact contact = service.findById(id);
         if (contact == null) {
             throw new WebApplicationException(Response.Status.NOT_FOUND);
         }
-        log.info("findById " + id + ": found Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-                + contact.getBirthDate() + " " + contact.getId());
+//        log.info("findById " + id + ": found Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//                + contact.getBirthDate() + " " + contact.getId());
         
         return Response.ok(contact).build();
     }
@@ -124,10 +106,10 @@ public class ContactRESTService {
      * @return Response
      */
     @SuppressWarnings("unused")
-    @POST
+    @RequestMapping(method=RequestMethod.POST)
     public Response createContact(Contact contact) {
-        log.info("createContact started. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-            + contact.getBirthDate() + " " + contact.getId());
+//        log.info("createContact started. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//            + contact.getBirthDate() + " " + contact.getId());
         if (contact == null) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
@@ -141,20 +123,20 @@ public class ContactRESTService {
             // Create an OK Response and pass the contact back in case it is needed.
             builder = Response.ok(contact);
             
-            log.info("createContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-                + contact.getBirthDate() + " " + contact.getId());
+//            log.info("createContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//                + contact.getBirthDate() + " " + contact.getId());
         } catch (ConstraintViolationException ce) {
-            log.info("ConstraintViolationException - " + ce.toString());
+//            log.info("ConstraintViolationException - " + ce.toString());
             // Handle bean validation issues
             builder = createViolationResponse(ce.getConstraintViolations());
         } catch (ValidationException e) {
-            log.info("ValidationException - " + e.toString());
+//            log.info("ValidationException - " + e.toString());
             // Handle the unique constrain violation
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("email", "That email is already used, please use a unique email");
             builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
         } catch (Exception e) {
-            log.info("Exception - " + e.toString());
+//            log.info("Exception - " + e.toString());
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("error", e.getMessage());
@@ -171,14 +153,13 @@ public class ContactRESTService {
      * @param Contact
      * @return Response
      */
-    @PUT
-    @Path("/{id:[0-9][0-9]*}")
-    public Response updateContact(@PathParam("id") long id, Contact contact) {
+    @RequestMapping(value="id:[0-9][0-9]*", method=RequestMethod.PUT)
+    public Response updateContact(@PathVariable long id, Contact contact) {
         if (contact == null) {
             throw new WebApplicationException(Response.Status.BAD_REQUEST);
         }
-        log.info("updateContact started. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-                + contact.getBirthDate() + " " + contact.getId());
+//        log.info("updateContact started. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//                + contact.getBirthDate() + " " + contact.getId());
 
         if (contact.getId() != id) {
             // The client attempted to update the read-only Id. This is not permitted.
@@ -199,14 +180,14 @@ public class ContactRESTService {
             // Create an OK Response and pass the contact back in case it is needed.
             builder = Response.ok(contact);
 
-            log.info("updateContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-                + contact.getBirthDate() + " " + contact.getId());
+//            log.info("updateContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//                + contact.getBirthDate() + " " + contact.getId());
         } catch (ConstraintViolationException ce) {
-            log.info("ConstraintViolationException - " + ce.toString());
+//            log.info("ConstraintViolationException - " + ce.toString());
             // Handle bean validation issues
             builder = createViolationResponse(ce.getConstraintViolations());
         } catch (ValidationException e) {
-            log.info("ValidationException - " + e.toString());
+//            log.info("ValidationException - " + e.toString());
             // Handle the unique constrain violation
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("email", "That email is already used, please use a unique email");
@@ -214,7 +195,7 @@ public class ContactRESTService {
             responseObj.put("anotherError", "You can find this error message in /src/main/java/org/jboss/quickstarts/wfk/rest/ContactRESTService.java line 242.");
             builder = Response.status(Response.Status.CONFLICT).entity(responseObj);
         } catch (Exception e) {
-            log.info("Exception - " + e.toString());
+//            log.info("Exception - " + e.toString());
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("error", e.getMessage());
@@ -231,10 +212,9 @@ public class ContactRESTService {
      * @param Contact
      * @return Response
      */
-    @DELETE
-    @Path("/{id:[0-9][0-9]*}")
-    public Response deleteContact(@PathParam("id") Long id) {
-        log.info("deleteContact started. Contact ID = " + id);
+    @RequestMapping(value="id:[0-9][0-9]*", method=RequestMethod.DELETE)
+    public Response deleteContact(@PathVariable Long id) {
+//        log.info("deleteContact started. Contact ID = " + id);
         Response.ResponseBuilder builder = null;
 
         try {
@@ -242,15 +222,15 @@ public class ContactRESTService {
             if (contact != null) {
                 service.delete(contact);
             } else {
-                log.info("ContactRESTService - deleteContact - No contact with matching ID was found so can't Delete.");
+//                log.info("ContactRESTService - deleteContact - No contact with matching ID was found so can't Delete.");
                 throw new WebApplicationException(Response.Status.NOT_FOUND);
             }
 
             builder = Response.noContent();
-            log.info("deleteContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
-                + contact.getBirthDate() + " " + contact.getId());
+//            log.info("deleteContact completed. Contact = " + contact.getFirstName() + " " + contact.getLastName() + " " + contact.getEmail() + " " + contact.getPhoneNumber() + " "
+//                + contact.getBirthDate() + " " + contact.getId());
         } catch (Exception e) {
-            log.info("Exception - " + e.toString());
+//            log.info("Exception - " + e.toString());
             // Handle generic exceptions
             Map<String, String> responseObj = new HashMap<String, String>();
             responseObj.put("error", e.getMessage());
@@ -268,7 +248,7 @@ public class ContactRESTService {
      * @return JAX-RS response containing all violations
      */
     private Response.ResponseBuilder createViolationResponse(Set<ConstraintViolation<?>> violations) {
-        log.fine("Validation completed. violations found: " + violations.size());
+//        log.fine("Validation completed. violations found: " + violations.size());
 
         Map<String, String> responseObj = new HashMap<String, String>();
 

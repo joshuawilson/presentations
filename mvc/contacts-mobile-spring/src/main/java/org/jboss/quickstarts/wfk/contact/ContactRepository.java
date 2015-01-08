@@ -25,6 +25,8 @@ import javax.persistence.criteria.Root;
 import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 
+import org.springframework.stereotype.Component;
+
 import java.util.List;
 import java.util.logging.Logger;
 
@@ -35,10 +37,11 @@ import java.util.logging.Logger;
  * @author Joshua Wilson
  *
  */
+@Component
 public class ContactRepository {
 
-    @Inject
-    private Logger log;
+//    @Inject
+//    private Logger log;
 
     @Inject
     private EntityManager em;
@@ -121,7 +124,7 @@ public class ContactRepository {
      * @throws ConstraintViolationException, ValidationException, Exception
      */
     Contact create(Contact contact) throws ConstraintViolationException, ValidationException, Exception {
-        log.info("ContactRepository.create() - Creating " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactRepository.create() - Creating " + contact.getFirstName() + " " + contact.getLastName());
         
         // Write the contact to the database.
         em.persist(contact);
@@ -144,7 +147,7 @@ public class ContactRepository {
      */
 //    Map<String, Object> update(Contact contact) throws Exception {
     Contact update(Contact contact) throws ConstraintViolationException, ValidationException, Exception {
-        log.info("ContactRepository.update() - Updating " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactRepository.update() - Updating " + contact.getFirstName() + " " + contact.getLastName());
         
         // Either update the contact or add it if it can't be found.
         em.merge(contact);
@@ -161,7 +164,7 @@ public class ContactRepository {
      */
 //    Map<String, Object> delete(Contact contact) throws Exception {
     Contact delete(Contact contact) throws Exception {
-        log.info("ContactRepository.delete() - Deleting " + contact.getFirstName() + " " + contact.getLastName());
+//        log.info("ContactRepository.delete() - Deleting " + contact.getFirstName() + " " + contact.getLastName());
         
         if (contact.getId() != null) {
             /*
@@ -179,8 +182,8 @@ public class ContactRepository {
              */
             em.remove(em.merge(contact));
             
-        } else {
-            log.info("ContactRepository.delete() - No ID was found so can't Delete.");
+//        } else {
+//            log.info("ContactRepository.delete() - No ID was found so can't Delete.");
         }
         
         return contact;
