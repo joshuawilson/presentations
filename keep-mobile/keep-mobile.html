@@ -1,0 +1,184 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="description" content="Slides for Responsive Web Design lab"><meta name="keywords" content="Mobile First, Responsive Web Design, JavaScript, CSS, HTML5"><meta name="author" content="Joshua Wilson"><title>Keep Mobile and Be Responsive</title><meta content="yes" name="apple-mobile-web-app-capable"><meta content="black-translucent" name="apple-mobile-web-app-status-bar-style"><meta content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, minimal-ui" name="viewport"><link href="reveal.js/css/reveal.css" rel="stylesheet"><link rel="stylesheet" href="reveal.js/css/theme/night.css" id="theme"><link href="reveal.js/lib/css/zenburn.css" rel="stylesheet"><script>document.write( '<link rel="stylesheet" href="reveal.js/css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );</script></head><body><div class="reveal"><div class="slides"><section><h2>Keep Mobile and Be Responsive</h2><p><small>Joshua Wilson</small></p></section><section id="_contact_info"><h2>Contact Info</h2><div class="ulist"><ul><li><p>name: Joshua Wilson</p></li><li><p>email: <a href="mailto:josh@redhat.com">josh@redhat.com</a></p></li><li><p>twitter: @javajoshw</p></li><li><p>freenode IRC: #jboss-developer</p><div class="ulist"><ul><li><p>nick: joshuaw</p></li></ul></div></li><li><p>github: joshuawilson</p></li></ul></div></section>
+<section id="_setup"><h2>Setup</h2><div class="ulist"><ul><li><p>JBoss EAP 6.x OR WildFly 8.x</p><div class="ulist"><ul><li><p><a href="http://www.jboss.org/products/eap/download/" class="bare">http://www.jboss.org/products/eap/download/</a></p></li><li><p><a href="http://wildfly.org/downloads/" class="bare">http://wildfly.org/downloads/</a></p></li></ul></div></li><li><p>Java SDK</p></li><li><p>maven</p></li><li><p>git</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>In order to follow along in this lab you will need to have each of these installed.</p></div></aside></section>
+<section id="_the_code"><h2>The Code</h2><div class="ulist"><ul><li><p>git clone <a href="https://github.com/joshuawilson/devnation-talks" class="bare">https://github.com/joshuawilson/devnation-talks</a></p></li><li><p>git checkout tag00-non-responsive</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p>You can fork it first if you want but this is all that is needed to download the code.
+This repo has both the code and these slides.</p></div></aside></section>
+<section id="_deploy_it"><h2>Deploy it</h2><div class="listingblock"><div class="content"><pre class="highlight"><code>cd [APP-SERVER]/bin</code></pre></div></div>
+<div class="paragraph"><p><strong>Next</strong></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>mvn clean package jboss-as:deploy</code></pre></div></div>
+<div class="paragraph"><p><strong>OR</strong></p></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code>mvn clean package wildfly:deploy</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Depending on which app server you are running, choose the appropriate Maven command.</p></div></aside></section>
+<section id="_view_it"><h2>View it</h2><div class="paragraph"><p><a href="http://localhost:8080/jboss-contacts-responsive/index.html" class="bare">http://localhost:8080/jboss-contacts-responsive/index.html</a></p></div>
+<aside class="notes"><div class="paragraph"><p>Once you have everything running you should see the app here.</p></div></aside></section>
+<section id="_responsiveness"><h2>Responsiveness</h2><div class="imageblock" style=""><div class="content"><img src="./images/keep-mobile-and-be-responsive.png" alt="Responsive"></div></div>
+<aside class="notes"><div class="paragraph"><p>On the slides this image is too <strong>large</strong> for the slide and therefore is not responsive.</p></div></aside></section>
+<section id="_responsive"><h2>Responsive ???</h2><div class="imageblock" style=""><div class="content"><img src="./images/keep-mobile-and-be-responsive.png" alt="Responsive" height="200"></div></div>
+<aside class="notes"><div class="paragraph"><p>On the slides this image is too <strong>small</strong> for the slide and therefore is not responsive.</p></div></aside></section>
+<section id="_responsive_2"><h2>Responsive</h2><div class="imageblock" style=""><div class="content"><img src="./images/keep-mobile-and-be-responsive.png" alt="Responsive" height="500"></div></div>
+<aside class="notes"><div class="paragraph"><p>On the slides this image is sized correctly but is still not responsive.</p></div></aside></section>
+<section id="_terms"><h2>Terms</h2><div class="ulist"><ul><li><p>Progressive Enhancement</p></li><li><p>Responsive Web Design</p></li><li><p>Mobile First</p></li></ul></div>
+<aside class="notes"><div class="paragraph"><p><strong>Progressive Enhancement</strong> - "advocates starting with functional, meaningful HTML and
+then unobtrusively layering presentations (CSS) and behavior (JS) on top for a richer,
+more dynamic user experience." - Jehl</p></div>
+<div class="paragraph"><p><strong>Responsive Web Design</strong> - "In 2010, Ethan Marcotte coined the term to describe an
+approach to web layout that comibines <em>fluid grids</em>, <em>flexible images</em>, and CSS3 <em>media queries</em>
+to deliver layouts that repsond (downright magically) to their environment." - Jehl</p></div>
+<div class="paragraph"><p><strong>Mobile First</strong> - "helps us to prioritize content, since there is not enough room a on
+small screen for non-crtical content" and "A mobile-first responsive stylesheet begins with
+styles that are shared across all experiences, forming the foundation of the smallest
+screen layout. These styles are followed by a series of mostly min-width media queries
+to scale that layout up to greater viewport sizes and pixel depths." - Jehl</p></div></aside></section>
+<section id="_css_reset"><h2>CSS reset</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn,
+	em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var,
+	b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas,
+	details, embed, figure, figcaption, footer, header, hgroup, menu, nav,
+	output, ruby, section, summary, time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+}</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>Each browser has different baseline settings for core elements. A reset will create
+a common baseline.</p></div>
+<div class="paragraph"><p>This has already been applied to the project, so there is no need to implement it.
+Just be aware of it and that it will reset things like &lt;h1&gt;.</p></div></aside></section>
+<section><section id="_font_sizing"><h2>Font Sizing</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">h1 {
+  font-size: 24px;
+  font-weight: bold;
+}</code></pre></div></div><aside class="notes"><div class="paragraph"><p>This needs to be set since we <em>reset</em> the &lt;h1&gt; element.</p></div>
+<div class="ulist"><ul><li><p>font-size was set to 100%</p></li><li><p>100% == base size</p></li><li><p>Change h1 to be larger again</p></li></ul></div></aside></section><section id="_sizing_problems"><h2>Sizing Problems</h2><div class="paragraph"><p>24px is a <strong>fixed</strong> size</p></div></section><section id="_fixing_sizing"><h2>Fixing Sizing</h2><div class="ulist"><ul><li><p>base type size == 16px</p></li><li><p>target / context = result</p></li><li><p>24 / 16 = 1.5</p></li></ul></div>
+<div class="listingblock"><div class="content"><pre class="highlight"><code class="language-">h1 {
+  font-size: 1.5em; /* 24px / 16px */
+  font-weight: bold;
+}</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>On most systems the base size is 16px. We can use that base context to mathmatically
+determine the flexible size in <strong>em</strong> units. We do this by dividing the target size,
+in this case 24px, by the context size, 16px, and we get the result of 1.5em.</p></div></aside></section><section id="_don_t_round"><h2>Don&#8217;t Round</h2><div class="paragraph"><p>11 / 24 = 0.458333333333333</p></div>
+<aside class="notes"><div class="paragraph"><p>It is tempting to round a figure like this to 0.46 but that would not be the correct
+size. Instead the browser can handle the long ugly number, so let it. You will have
+more accurate sizings.</p></div></aside></section><section id="_coding_time"><h2>Coding time</h2><div class="ulist"><ul><li class="fragment"><p>Search for <strong>font-size</strong> and change the <em>pixels</em> to '<em>em</em>'s</p></li><li class="fragment"><p>tag01-font-size</p></li></ul></div></section></section>
+<section><section id="_layout"><h2>Layout</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">body {
+	width: 960px;
+}
+
+div .main {
+  width: 900px;
+}</code></pre></div></div><aside class="notes"><div class="paragraph"><p>The width of the main section is determined in pixels.</p></div></aside></section><section id="_flexible_layout"><h2>Flexible Layout</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">body {
+	width: 960px;
+}
+
+div .main {
+  width: 93.75%; /* 900px / 960px */
+}</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>The main section is within the body. The body is the context and the main section is the target.
+Divide them to find the resulting percentage.</p></div>
+<div class="paragraph"><p>Sometimes you may want to use em&#8217;s instead of percentage, especially when text height is involved.</p></div>
+<div class="paragraph"><p>Using Chrome dev tools helps here, letting you change or compare different values without building the code.</p></div></aside></section><section id="_coding_time_2"><h2>Coding time</h2><div class="ulist"><ul><li class="fragment"><p>Search for <strong>px</strong> and change them to % or '<em>em</em>'s</p></li><li class="fragment"><p>tag02-flexible-layout</p></li></ul></div></section></section>
+<section id="_user_agent_ua_sniffing"><h2>User Agent (UA) Sniffing</h2><div class="paragraph"><p>Device detection</p></div>
+<aside class="notes"><div class="paragraph"><p>"Perhaps the most common criticism of user agent sniffing is that the information a
+browser provides isn&#8217;t always reliable. Browsers, networks, and even users sometimes
+modify user agent information for myriad reasons" - Jehl</p></div></aside></section>
+<section><section id="_viewport"><h2>viewport</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html">&lt;meta name="viewport" content="width=device-width, initial-scale=1.0" /&gt;</code></pre></div></div><aside class="notes"><div class="paragraph"><p>Originally created for Mobile Safari in 2007 but was soon adopted by the other browsers
+and became a psuedo-standard.</p></div></aside></section><section id="_viewport_next"><h2>viewport.next</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">@-webkit-viewport{width:device-width}
+@-moz-viewport{width:device-width}
+@-ms-viewport{width:device-width}
+@-o-viewport{width:device-width}
+@viewport{width:device-width}</code></pre></div></div>
+<aside class="notes"><div class="paragraph"><p>"The W3C has standardized an approach to specifying viewport style information
+such as width and scale, and it&#8217;s handled via CSS instead of HTML" - Jehl</p></div></aside></section><section id="_coding_time_3"><h2>Coding time</h2><div class="ulist"><ul><li class="fragment"><p>Add the <em>viewport</em> settings to all the HTML files and the main CSS file</p></li><li class="fragment"><p>tag03-viewport</p></li></ul></div></section></section>
+<section><section id="__media_queries"><h2>@media queries</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="css language-css">@media screen and (min-width: 1024px) {
+  body {
+    font-size: 100%;
+  }
+}</code></pre></div></div><aside class="notes"><div class="paragraph"><p>Originally the plan was to have each device express it&#8217;s own <em>media</em> type. However
+the mobile devices did not adopt this method of identification. Some of the earliest
+mobile devices had very simple web browsers. Additionally the only media type,
+<em>handheld</em> could not cover all the various sizes there were coming out. So other means were needed.</p></div>
+<div class="paragraph"><p>Media queries provide the answer. They enable us to examine the physical characteristics
+of the device viewing the webpage.</p></div></aside></section><section id="_the_features"><h2>The Features</h2><table class="tableblock frame-all grid-all" style="width:100%"><colgroup><col style="width:33%"><col style="width:33%"><col style="width:33%"></colgroup><tbody><tr><td class="tableblock halign-left valign-top"><p class="tableblock">width</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">aspect-ratio</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">monochrome</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">height</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">device-aspect-ratio</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">resolution</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">device-width</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">color</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">scan</p></td></tr><tr><td class="tableblock halign-left valign-top"><p class="tableblock">device-height</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">color-index</p></td><td class="tableblock halign-left valign-top"><p class="tableblock">orientation</p></td></tr></tbody></table>
+<aside class="notes"></aside></section></section>
+<section id="_s"><h2>s</h2><div class="listingblock"><div class="content"><pre class="highlight"><code class="html language-html"></code></pre></div></div>
+<aside class="notes"></aside></section></div></div><script src="reveal.js/lib/js/head.min.js"></script><script src="reveal.js/js/reveal.js"></script><script>// See https://github.com/hakimel/reveal.js#configuration for a full list of configuration options
+Reveal.initialize({
+  // Display controls in the bottom right corner
+  controls: true,
+  // Display a presentation progress bar
+  progress: true,
+  // Display the page number of the current slide
+  slideNumber: false,
+  // Push each slide change to the browser history
+  history: false,
+  // Enable keyboard shortcuts for navigation
+  keyboard: true,
+  // Enable the slide overview mode
+  overview: true,
+  // Vertical centering of slides
+  center: true,
+  // Enables touch navigation on devices with touch input
+  touch: true,
+  // Loop the presentation
+  loop: false,
+  // Change the presentation direction to be RTL
+  rtl: false,
+  // Turns fragments on and off globally
+  fragments: true,
+  // Flags if the presentation is running in an embedded mode,
+  // i.e. contained within a limited portion of the screen
+  embedded: false,
+  // Number of milliseconds between automatically proceeding to the
+  // next slide, disabled when set to 0, this value can be overwritten
+  // by using a data-autoslide attribute on your slides
+  autoSlide: 0,
+  // Stop auto-sliding after user input
+  autoSlideStoppable: true,
+  // Enable slide navigation via mouse wheel
+  mouseWheel: true,
+  // Hides the address bar on mobile devices
+  hideAddressBar: true,
+  // Opens links in an iframe preview overlay
+  previewLinks: false,
+  // Theme (e.g., beige, black, blood, league, moon, night, serif, simple, sky, solarized, white)
+  // NOTE setting the theme in the config no longer works in reveal.js 3.x
+  //theme: Reveal.getQueryHash().theme || 'night',
+  // Transition style (e.g., none, fade, slide, convex, concave, zoom)
+  transition: Reveal.getQueryHash().transition || 'slide',
+  // Transition speed (e.g., default, fast, slow)
+  transitionSpeed: 'default',
+  // Transition style for full page slide backgrounds (e.g., none, fade, slide, convex, concave, zoom)
+  backgroundTransition: 'fade',
+  // Number of slides away from the current that are visible
+  viewDistance: 3,
+  // Parallax background image (e.g., "'https://s3.amazonaws.com/hakim-static/reveal-js/reveal-parallax-1.jpg'")
+  parallaxBackgroundImage: '',
+  // Parallax background size in CSS syntax (e.g., "2100px 900px")
+  parallaxBackgroundSize: '',
+
+  // The "normal" size of the presentation, aspect ratio will be preserved
+  // when the presentation is scaled to fit different resolutions. Can be
+  // specified using percentage units.
+  width: 960,
+  height: 700,
+
+  // Factor of the display size that should remain empty around the content
+  margin: 0.1,
+
+  // Bounds for smallest/largest possible scale to apply to content
+  minScale: 0.2,
+  maxScale: 1.5,
+
+  // Optional libraries used to extend on reveal.js
+  dependencies: [
+      { src: 'reveal.js/lib/js/classList.js', condition: function() { return !document.body.classList; } },
+      { src: 'reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+      { src: 'reveal.js/plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } },
+      { src: 'reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } },
+      { src: 'reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } }
+  ]
+});</script></body></html>

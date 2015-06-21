@@ -1,0 +1,451 @@
+= Keep Mobile and Be Responsive
+Joshua Wilson <josh@redhat.com>
+v0.0.1, 2015-06-24
+:page-layout: base
+:description: Slides for Responsive Web Design lab
+:keywords: Mobile First, Responsive Web Design, JavaScript, CSS, HTML5
+:compat-mode!:
+//:docinfo:
+:imagesdir: ./images
+//:stylesdir: ./styles
+//:stylesheet: coderay-asciidoctor.css
+//:stylesheet: slides.css
+//:linkcss:
+:includedir: ./_includes
+:sectlinks:
+:experimental:
+:table-caption!:
+:example-caption!:
+:figure-caption!:
+:linkattrs:
+//:icons: font
+:backend: revealjs
+:revealjs_theme: night
+:revealjs_mouseWheel: true
+:revealjs_fragments: true
+:source-highlighter: highlightjs
+// URLs
+
+//Building this doc into slides uses the following cmd from the location of this doc:
+// asciidoctor -T ~/git/asciidoctor-reveal.js/templates/slim/ keep-mobile.adoc
+
+
+//The quotes in this presentation are taken from:
+//  Responsive Web Deisgn - Ethan Marcotte
+//  Responsive Respsonsible Design - Scott Jehl
+
+//[footer]#twitter: @javajoshw#
+// manually place this tag into the generated html if you want to effect the footer class.
+// <link rel="stylesheet" href="styles/slides.css">
+
+== Contact Info
+
+* name: Joshua Wilson
+* email: josh@redhat.com
+* twitter: @javajoshw
+* freenode IRC: #jboss-developer
+** nick: joshuaw
+* github: joshuawilson
+
+== Setup
+
+* JBoss EAP 6.x OR WildFly 8.x
+** http://www.jboss.org/products/eap/download/
+** http://wildfly.org/downloads/
+* Java SDK
+* maven
+* git
+
+[NOTE.speaker]
+--
+In order to follow along in this lab you will need to have each of these installed.
+--
+
+== The Code
+
+* git clone https://github.com/joshuawilson/devnation-talks
+* git checkout tag00-non-responsive
+
+[NOTE.speaker]
+--
+You can fork it first if you want but this is all that is needed to download the code.
+This repo has both the code and these slides.
+--
+
+== Deploy it
+
+[source]
+----
+cd [APP-SERVER]/bin
+----
+
+*Next*
+
+[source]
+----
+mvn clean package jboss-as:deploy
+----
+
+*OR*
+
+[source]
+----
+mvn clean package wildfly:deploy
+----
+
+[NOTE.speaker]
+--
+Depending on which app server you are running, choose the appropriate Maven command.
+--
+
+== View it
+
+http://localhost:8080/jboss-contacts-responsive/index.html
+
+[NOTE.speaker]
+--
+Once you have everything running you should see the app here.
+--
+
+== Responsiveness
+image::keep-mobile-and-be-responsive.png[Responsive]
+
+[NOTE.speaker]
+--
+On the slides this image is too *large* for the slide and therefore is not responsive.
+--
+
+== Responsive ???
+image::keep-mobile-and-be-responsive.png[Responsive, height=200]
+
+[NOTE.speaker]
+--
+On the slides this image is too *small* for the slide and therefore is not responsive.
+--
+
+== Responsive
+image::keep-mobile-and-be-responsive.png[Responsive, height=500]
+
+[NOTE.speaker]
+--
+On the slides this image is sized correctly but is still not responsive.
+--
+
+== Terms
+
+//[%step]
+* Progressive Enhancement
+* Responsive Web Design
+* Mobile First
+
+[NOTE.speaker]
+--
+*Progressive Enhancement* - "advocates starting with functional, meaningful HTML and
+then unobtrusively layering presentations (CSS) and behavior (JS) on top for a richer,
+more dynamic user experience." - Jehl
+
+*Responsive Web Design* - "In 2010, Ethan Marcotte coined the term to describe an
+approach to web layout that comibines _fluid grids_, _flexible images_, and CSS3 _media queries_
+to deliver layouts that repsond (downright magically) to their environment." - Jehl
+
+*Mobile First* - "helps us to prioritize content, since there is not enough room a on
+small screen for non-crtical content" and "A mobile-first responsive stylesheet begins with
+styles that are shared across all experiences, forming the foundation of the smallest
+screen layout. These styles are followed by a series of mostly min-width media queries
+to scale that layout up to greater viewport sizes and pixel depths." - Jehl
+--
+
+== CSS reset
+
+[source, language="css"]
+----
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p,
+	blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn,
+	em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var,
+	b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend,
+	table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas,
+	details, embed, figure, figcaption, footer, header, hgroup, menu, nav,
+	output, ruby, section, summary, time, mark, audio, video {
+		margin: 0;
+		padding: 0;
+		border: 0;
+		font-size: 100%;
+		font: inherit;
+		vertical-align: baseline;
+}
+----
+
+[NOTE.speaker]
+--
+Each browser has different baseline settings for core elements. A reset will create
+a common baseline.
+
+This has already been applied to the project, so there is no need to implement it.
+Just be aware of it and that it will reset things like <h1>.
+--
+
+== Font Sizing
+
+[source, language="css"]
+----
+h1 {
+  font-size: 24px;
+  font-weight: bold;
+}
+----
+
+[NOTE.speaker]
+--
+This needs to be set since we _reset_ the <h1> element.
+
+* font-size was set to 100%
+* 100% == base size
+* Change h1 to be larger again
+--
+
+=== Sizing Problems
+
+24px is a *fixed* size
+
+=== Fixing Sizing
+
+* base type size == 16px
+* target / context = result
+* 24 / 16 = 1.5
+
+[source, language=""]
+----
+h1 {
+  font-size: 1.5em; /* 24px / 16px */
+  font-weight: bold;
+}
+
+----
+
+[NOTE.speaker]
+--
+On most systems the base size is 16px. We can use that base context to mathmatically
+determine the flexible size in *em* units. We do this by dividing the target size,
+in this case 24px, by the context size, 16px, and we get the result of 1.5em.
+--
+
+=== Don't Round
+
+11 / 24 = 0.458333333333333
+
+[NOTE.speaker]
+--
+It is tempting to round a figure like this to 0.46 but that would not be the correct
+size. Instead the browser can handle the long ugly number, so let it. You will have
+more accurate sizings.
+--
+
+=== Coding time
+
+[%step]
+* Search for *font-size* and change the _pixels_ to '_em_'s
+* tag01-font-size
+
+== Layout
+
+[source, language="css"]
+----
+body {
+	width: 960px;
+}
+
+div .main {
+  width: 900px;
+}
+----
+
+[NOTE.speaker]
+--
+The width of the main section is determined in pixels.
+--
+
+=== Flexible Layout
+
+[source, language="css"]
+----
+body {
+	width: 960px;
+}
+
+div .main {
+  width: 93.75%; /* 900px / 960px */
+}
+----
+
+[NOTE.speaker]
+--
+The main section is within the body. The body is the context and the main section is the target.
+Divide them to find the resulting percentage.
+
+Sometimes you may want to use em's instead of percentage, especially when text height is involved.
+
+Using Chrome dev tools helps here, letting you change or compare different values without building the code.
+--
+
+=== Coding time
+
+[%step]
+* Search for *px* and change them to % or '_em_'s
+* tag02-flexible-layout
+
+== User Agent (UA) Sniffing
+
+Device detection
+
+[NOTE.speaker]
+--
+"Perhaps the most common criticism of user agent sniffing is that the information a
+browser provides isn't always reliable. Browsers, networks, and even users sometimes
+modify user agent information for myriad reasons" - Jehl
+--
+
+== viewport
+
+[source, language="html"]
+----
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+----
+
+[NOTE.speaker]
+--
+Originally created for Mobile Safari in 2007 but was soon adopted by the other browsers
+and became a psuedo-standard.
+--
+
+=== viewport.next
+
+[source, language="css"]
+----
+@-webkit-viewport{width:device-width}
+@-moz-viewport{width:device-width}
+@-ms-viewport{width:device-width}
+@-o-viewport{width:device-width}
+@viewport{width:device-width}
+----
+
+[NOTE.speaker]
+--
+"The W3C has standardized an approach to specifying viewport style information
+such as width and scale, and it's handled via CSS instead of HTML" - Jehl
+--
+
+=== Coding time
+
+[%step]
+* Add the _viewport_ settings to all the HTML files and the main CSS file
+* tag03-viewport
+
+== @media queries
+
+[source, language="css"]
+----
+@media screen and (min-width: 1024px) {
+  body {
+    font-size: 100%;
+  }
+}
+----
+
+[NOTE.speaker]
+--
+Originally the plan was to have each device express it's own _media_ type. However
+the mobile devices did not adopt this method of identification. Some of the earliest
+mobile devices had very simple web browsers. Additionally the only media type,
+_handheld_ could not cover all the various sizes there were coming out. So other means were needed.
+
+Media queries provide the answer. They enable us to examine the physical characteristics
+of the device viewing the webpage.
+--
+
+=== The Features
+
+|===
+|width |aspect-ratio |monochrome
+|height |device-aspect-ratio |resolution
+|device-width |color |scan
+|device-height |color-index |orientation
+|===
+
+[NOTE.speaker]
+--
+Most of these features have _min-_ and _max-_ aspects to them.
+--
+
+== Redux
+
+[%step]
+* Make a back-up copy of the CSS file
+* Remove all styles but the CSS Reset
+* Carefully add back in the sytles that are needed for a minimum layout
+
+[NOTE.speaker]
+--
+Taking both Progressive Enhancement and Mobile First philosophies we start with
+a minimal approach first. Only using those styles that all devises should be
+able to use and display. Nothing fancy here.
+--
+
+== s
+
+[source, language="css"]
+----
+
+----
+
+[NOTE.speaker]
+--
+
+--
+
+== s
+
+[source, language="css"]
+----
+
+----
+
+[NOTE.speaker]
+--
+
+--
+
+== s
+
+[source, language="css"]
+----
+
+----
+
+[NOTE.speaker]
+--
+
+--
+
+== s
+
+[source, language="css"]
+----
+
+----
+
+[NOTE.speaker]
+--
+
+--
+
+== s
+
+[source, language="css"]
+----
+
+----
+
+[NOTE.speaker]
+--
+
+--
