@@ -1,8 +1,8 @@
-= Keep Mobile and Be Responsive
+= Responsive Web Design
 Joshua Wilson <josh@redhat.com>
 v0.0.1, 2015-06-24
 :page-layout: base
-:description: Slides for Responsive Web Design lab
+:description: Slides for Responsive Web Design
 :keywords: Mobile First, Responsive Web Design, JavaScript, CSS, HTML5
 :compat-mode!:
 //:docinfo:
@@ -27,7 +27,7 @@ v0.0.1, 2015-06-24
 // URLs
 
 //Building this doc into slides uses the following cmd from the location of this doc:
-// asciidoctor -T ~/git/asciidoctor-reveal.js/templates/slim/ keep-mobile.adoc
+// asciidoctor -T ~/git/asciidoctor-reveal.js/templates/slim/ keep-mobile-intro.adoc
 
 
 //The quotes in this presentation are taken from:
@@ -38,15 +38,6 @@ v0.0.1, 2015-06-24
 // manually place this tag into the generated html if you want to effect the footer class.
 // <link rel="stylesheet" href="styles/slides.css">
 
-== Contact Info
-
-* name: Joshua Wilson
-* email: josh@redhat.com
-* twitter: @javajoshw
-* freenode IRC: #jboss-developer
-** nick: joshuaw
-* github: joshuawilson
-
 == Water?
 
 image::Content-is-like-water-1980.jpg[Content is like water, height=500]
@@ -54,66 +45,6 @@ image::Content-is-like-water-1980.jpg[Content is like water, height=500]
 [NOTE.speaker]
 --
 Some times there is too much content to fit my container.
---
-
-== Setup
-
-* JBoss EAP 6.x OR WildFly 8.x
-** http://www.jboss.org/products/eap/download/
-** http://wildfly.org/downloads/
-* Java SDK
-* maven
-* git
-
-[NOTE.speaker]
---
-In order to follow along in this lab you will need to have each of these installed.
---
-
-== The Code
-
-* git clone https://github.com/joshuawilson/devnation-talks
-* git checkout tag00-non-responsive
-
-[NOTE.speaker]
---
-You can fork it first if you want but this is all that is needed to download the code.
-This repo has both the code and these slides.
---
-
-== Deploy it
-
-[source]
-----
-cd [APP-SERVER]/bin
-----
-
-*Next*
-
-[source]
-----
-mvn clean package jboss-as:deploy
-----
-
-*OR*
-
-[source]
-----
-mvn clean package wildfly:deploy
-----
-
-[NOTE.speaker]
---
-Depending on which app server you are running, choose the appropriate Maven command.
---
-
-== View it
-
-http://localhost:8080/jboss-contacts-responsive/index.html
-
-[NOTE.speaker]
---
-Once you have everything running you should see the app here.
 --
 
 == Responsiveness
@@ -138,30 +69,6 @@ image::keep-mobile-and-be-responsive.png[Responsive, height=500]
 [NOTE.speaker]
 --
 On the slides this image is sized correctly but is still not responsive.
---
-
-== Terms
-
-//[%step]
-* Progressive Enhancement
-* Responsive Web Design
-* Mobile First
-
-[NOTE.speaker]
---
-*Progressive Enhancement* - "advocates starting with functional, meaningful HTML and
-then unobtrusively layering presentations (CSS) and behavior (JS) on top for a richer,
-more dynamic user experience." - Jehl
-
-*Responsive Web Design* - "In 2010, Ethan Marcotte coined the term to describe an
-approach to web layout that comibines _fluid grids_, _flexible images_, and CSS3 _media queries_
-to deliver layouts that repsond (downright magically) to their environment." - Jehl
-
-*Mobile First* - "helps us to prioritize content, since there is not enough room a on
-small screen for non-crtical content" and "A mobile-first responsive stylesheet begins with
-styles that are shared across all experiences, forming the foundation of the smallest
-screen layout. These styles are followed by a series of mostly min-width media queries
-to scale that layout up to greater viewport sizes and pixel depths." - Jehl
 --
 
 == CSS reset
@@ -238,45 +145,6 @@ determine the flexible size in *em* units. We do this by dividing the target siz
 in this case 24px, by the context size, 16px, and we get the result of 1.5em.
 --
 
-== px / em / rem / %
-
-[source, language="html"]
-----
-<div>
-  this is outside
-  <div>
-    this is inside
-  </div>
-</div>
-----
-
-[source, language="css"]
-----
-div {
-  font-size: 24px;
-  font-size: 1.5em;
-  font-size: 1.5rem;
-  font-size: 150%;
-}
-----
-
-== Don't Round
-
-11 / 24 = 0.458333333333333
-
-[NOTE.speaker]
---
-It is tempting to round a figure like this to 0.46 but that would not be the correct
-size. Instead the browser can handle the long ugly number, so let it. You will have
-more accurate sizings.
---
-
-== Coding time
-
-[%step]
-* Search for *font-size* and change the _pixels_ to '_em_'s
-* tag01-font-size
-
 == Layout
 
 [source, language="css"]
@@ -318,23 +186,6 @@ Sometimes you may want to use em's instead of percentage, especially when text h
 Using Chrome dev tools helps here, letting you change or compare different values without building the code.
 --
 
-== Coding time
-
-[%step]
-* Search for *px* and change them to % or '_em_'s
-* tag02-flexible-layout
-
-== User Agent (UA) Sniffing
-
-Device detection
-
-[NOTE.speaker]
---
-"Perhaps the most common criticism of user agent sniffing is that the information a
-browser provides isn't always reliable. Browsers, networks, and even users sometimes
-modify user agent information for myriad reasons" - Jehl
---
-
 == viewport
 
 [source, language="html"]
@@ -347,29 +198,6 @@ modify user agent information for myriad reasons" - Jehl
 Originally created for Mobile Safari in 2007 but was soon adopted by the other browsers
 and became a psuedo-standard.
 --
-
-== viewport.next
-
-[source, language="css"]
-----
-@-webkit-viewport{width:device-width}
-@-moz-viewport{width:device-width}
-@-ms-viewport{width:device-width}
-@-o-viewport{width:device-width}
-@viewport{width:device-width}
-----
-
-[NOTE.speaker]
---
-"The W3C has standardized an approach to specifying viewport style information
-such as width and scale, and it's handled via CSS instead of HTML" - Jehl
---
-
-== Coding time
-
-[%step]
-* Add the _viewport_ settings to all the HTML files and the main CSS file
-* tag03-viewport
 
 == @media queries
 
@@ -393,42 +221,11 @@ Media queries provide the answer. They enable us to examine the physical charact
 of the device viewing the webpage.
 --
 
-== The Features
+== Contact Info
 
-|===
-|width |aspect-ratio |monochrome
-|height |device-aspect-ratio |resolution
-|device-width |color |scan
-|device-height |color-index |orientation
-|===
-
-[NOTE.speaker]
---
-Most of these features have _min-_ and _max-_ aspects to them.
---
-
-== The Queries
-
-[%step]
-* @media only all
-* @media screen and (max-width: 40em) { /* 640px / 16px */
-* @media screen and (min-width: 60em) { /* 960px / 16px */
-
-[NOTE.speaker]
---
-What media queries do we need?
-
-First we start with _only all_, that covers everything
-
-Then we look at the code to see where our breakpoints are. Based on the code there is
-a header bar that is 960px wide and the main section is 640px wide. Those would make
-great breakpoints.
-
-Add these now.
---
-
-== Coding time
-
-[%step]
-* Add the _media queries_ after the CSS Reset in the main CSS file.
-* tag04-media
+* name: Joshua Wilson
+* email: josh@redhat.com
+* twitter: @javajoshw
+* freenode IRC: #jboss-developer
+** nick: joshuaw
+* github: joshuawilson
